@@ -425,7 +425,7 @@ class datadog_agent(
   # Install agent
   if $manage_install {
     case $::operatingsystem {
-      'Ubuntu','Debian','Raspbian' : {
+      'Ubuntu','Debian' : {
         if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
           notify { 'apt keyserver arguments deprecation':
             message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
@@ -474,6 +474,15 @@ class datadog_agent(
           agent_repo_uri      => $agent_repo_uri,
           agent_version       => $agent_version,
           rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
+        }
+      }
+      'Raspbian' : {
+        class { 'datadog_agent::source' :
+          agent_major_version => $_agent_major_version,
+          api_key             => $api_key,
+          hostname            => $host,
+          tags                => $local_tags,
+          datadog_site        => $datadog_site,
         }
       }
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
