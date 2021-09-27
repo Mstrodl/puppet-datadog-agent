@@ -6,6 +6,7 @@
 class datadog_agent::source(
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   String $agent_version = $datadog_agent::params::agent_version,
+  String $datadog_site = $datadog_agent::params::datadog_site,
   String $api_key = $datadog_agent::api_key,
   String $hostname = $datadog_agent::host,
   Array  $tags = $datadog_agent::tags,
@@ -16,7 +17,7 @@ class datadog_agent::source(
     command => 'bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"',
     environment => [
       "DD_AGENT_MAJOR_VERSION='${agent_major_version}'",
-      "DD_SITE='${site}'",
+      "DD_SITE='${datadog_site}'",
       "DD_API_KEY='${api_key}'",
       "DD_TAGS=${tags_quote_wrap}",
     ],
