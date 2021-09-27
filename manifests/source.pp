@@ -14,12 +14,14 @@ class datadog_agent::source(
   String $tags_quote_wrap = "\"${tags_join}\"",
 ) inherits datadog_agent::params {
   exec { 'installer':
-    command => 'bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"',
+    command     =>
+      'bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"',
     environment => [
       "DD_AGENT_MAJOR_VERSION='${agent_major_version}'",
       "DD_SITE='${datadog_site}'",
       "DD_API_KEY='${api_key}'",
       "DD_TAGS=${tags_quote_wrap}",
     ],
+    notify      => Package[$datadog_agent::params::package_name],
   }
 }
