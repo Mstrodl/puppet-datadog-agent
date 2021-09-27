@@ -16,7 +16,7 @@ class datadog_agent::source(
   # Fake package that depends on our exec. Dumb solution
   package { $datadog_agent::params::package_name:
     command  => "/bin/echo",
-    provider => "ports",
+    # provider => "ports",
     require  => Exec['installer'],
   }
   exec { 'installer':
