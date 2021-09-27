@@ -17,7 +17,7 @@ class datadog_agent::source(
   package { $datadog_agent::params::package_name:
     command  => "/bin/echo",
     provider => "ports",
-    requires => Exec['installer'],
+    require  => Exec['installer'],
   }
   exec { 'installer':
     command     =>
