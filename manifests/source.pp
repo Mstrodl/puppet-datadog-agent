@@ -13,6 +13,12 @@ class datadog_agent::source(
   String $tags_join = join($tags,','),
   String $tags_quote_wrap = "\"${tags_join}\"",
 ) inherits datadog_agent::params {
+  # Fake package that depends on our exec. Dumb solution
+  package { $datadog_agent::params::package_name,
+    command  => "/bin/echo",
+    provider => "ports",
+    requires => Exec['installer']
+  }
   exec { 'installer':
     command     =>
       'bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"',
