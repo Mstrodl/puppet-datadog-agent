@@ -20,8 +20,6 @@ class datadog_agent::source(
     require  => Exec['installer'],
   }
   exec { 'installer':
-    command     =>
-      'bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"',
     environment => [
       "DD_AGENT_MAJOR_VERSION='${agent_major_version}'",
       "DD_SITE='${datadog_site}'",
@@ -29,5 +27,8 @@ class datadog_agent::source(
       "DD_TAGS=${tags_quote_wrap}",
     ],
     notify      => Package[$datadog_agent::params::package_name],
+    provider    => "shell",
+    command     =>
+      'bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"',
   }
 }
